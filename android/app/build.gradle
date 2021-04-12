@@ -38,18 +38,37 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.SGLvlUp"
-        minSdkVersion 16
+        applicationId "com.xplorer.SGLvlUp"
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 4
+        versionName "4.0"
         multiDexEnabled true
     }
+
+    signingConfigs {
+        debug {
+            storeFile file('key.jks')
+            storePassword 'sglvlup'
+            keyAlias 'androiddebugkey'
+            keyPassword 'sglvlup'
+        }
+        debug {
+            storeFile file('key.jks')
+            storePassword 'sglvlup'
+            keyAlias 'release'
+            keyPassword 'sglvlup'
+        }
+    }
+
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+        debug {
             signingConfig signingConfigs.debug
         }
     }
@@ -61,4 +80,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
 }
+
+apply plugin: 'com.google.gms.google-services'

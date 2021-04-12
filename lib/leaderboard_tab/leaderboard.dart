@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:SGLvlUp/ads/ad_helper.dart';
+import 'package:SGLvlUp/audio/SoundsHandler.dart';
 import 'package:SGLvlUp/category/category.dart';
-import 'package:SGLvlUp/shared/loading.dart';
+import 'package:SGLvlUp/shared/loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
+
+import 'UserScore.dart';
 
 class LeaderboardWidget extends StatefulWidget {
   LeaderboardWidget({Key key}) : super(key: key);
@@ -15,14 +20,17 @@ class LeaderboardWidget extends StatefulWidget {
 
 class _LeaderboardWidgetState extends State<LeaderboardWidget> {
 
+  String apiUrl = "http://ec2-54-255-217-149.ap-southeast-1.compute.amazonaws.com:5000";
   bool isLoading = true;
   String valueChoose;
   var start = 4;
+  BannerAd _ad;
+  bool isLoaded;
 
   List<Category> categoriesName = List<Category>();
   List<String> listItem  = List<String>();
+  List<UserScore> userScore = List<UserScore>();
 
-  final String url = "http://10.0.2.2:5000/api/quiz/categories";
 
   @override
   void initState() {
@@ -30,23 +38,66 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
     this.getJsonData().then((value) {
       setState(() {
         categoriesName.addAll(value);
-        isLoading = false;
         for(var i = 0; i < categoriesName.length; i++) {
           listItem.add(categoriesName[i].category);
         }
       });
     });
+    this.getJsonDataUserScore().then((value) {
+      setState(() {
+        userScore.addAll(value);
+        print("Overall User Scores initialised");
+        isLoading = false;
+      });
+    });
     print("initState Ran");
-    super.initState();
 
+    _ad = BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: AdRequest(),
+        size: AdSize.fullBanner,
+        listener: AdListener(
+            onAdLoaded: (_) {
+              setState(() {
+                isLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (_, error){
+              print('Ad Fail to Load with Error: $error');
+            }
+        )
+    );
+
+    _ad.load();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
+  }
+
+  Widget checkForAd() {
+    if(isLoaded == true) {
+      return Container(
+        child: AdWidget(
+          ad: _ad,
+        ),
+        width: _ad.size.width.toDouble(),
+        height: _ad.size.height.toDouble(),
+        alignment: Alignment.center,
+      );
+    } else {
+      return CircularProgressIndicator();
+    }
   }
 
   Future<List<Category>> getJsonData() async {
     print("fetching...");
     var response =
-    await http.get(url
-    );
-    print(response.body);
+    await http.get(apiUrl + "/api/quiz/categories");
+    //print(response.body);
 
     var categorylist = List<Category>();
 
@@ -63,12 +114,54 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
     }
   }
 
+  Future<List<UserScore>> getJsonDataUserScore() async {
+    print("fetching...");
+    var response =
+    await http.get(apiUrl + "/api/score/scores/overall");
+    //print(response.body);
+
+    var userscorelist = List<UserScore>();
+
+    if (response.statusCode == 200) {
+
+      var data = jsonDecode(response.body);
+      for (var unit in data) {
+        userscorelist.add(UserScore.fromJson(unit));
+      }
+      return userscorelist;
+
+    } else {
+      throw Exception('Failed to load Categories');
+    }
+  }
+
+  Future<List<UserScore>> getJsonDataNewUserScore(String value) async {
+    print("fetching...");
+    var response =
+    await http.get(apiUrl + "/api/score/scores/category/$value");
+    //print(response.body);
+
+    var userscorelist = List<UserScore>();
+
+    if (response.statusCode == 200) {
+
+      var data = jsonDecode(response.body);
+      for (var unit in data) {
+        userscorelist.add(UserScore.fromJson(unit));
+      }
+      return userscorelist;
+
+    } else {
+      throw Exception('Failed to load Categories');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     // TODO: implement build
-    return isLoading ? Loading() : Container(
+    return isLoading ? Loader() : Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -93,7 +186,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                       padding: EdgeInsets.all(0),
                       color: Colors.white,
                       child: DropdownButton(
-                        hint: Center(child: Text("Select Category")),
+                        hint: Center(child: Text("Overall")),
                         icon: Icon(Icons.arrow_drop_down),
                         iconSize: 36,
                         dropdownColor: Colors.white,
@@ -104,8 +197,23 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                         ),
                         value: valueChoose,
                         onChanged: (newValue) {
+                          SoundsHandler().playTap();
                           setState(() {
+                            print("Selected Category: " + newValue);
                             valueChoose = newValue;
+
+
+                            this.getJsonDataNewUserScore(newValue).then((value) {
+                              setState(() {
+                                print(value);
+                                List<UserScore> currUserScore = new List<UserScore>();
+                                currUserScore.addAll(value);
+                                userScore = currUserScore;
+                                print("${valueChoose} User Scores initialised");
+                                //dispose();
+                              });
+                            });
+
                           });
                         },
                         items: listItem.map((valueItem) {
@@ -118,22 +226,25 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                     ),
                   ),
                   Container(
-                    height: 200,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     color: Colors.transparent,
                     child: Stack(
                       children: [
                         Align(
                             alignment: Alignment(-0.7, 0), child: StackItem(
                           placing: 2,
+                          userScore: userScore,
                         )),
                         Align(
                           alignment: Alignment(0, -0.6),
                           child: StackItem(
+                            userScore: userScore,
                             large: true,
                             placing: 1,
                           ),
                         ),
                         Align(alignment: Alignment(0.7, 0), child: StackItem(
+                          userScore: userScore,
                           placing: 3,
                         )),
                       ],
@@ -148,12 +259,13 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                             child: new ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemBuilder: (context, index) => ProfileItem(index : index + 4),
-                              itemCount: 6,
+                              itemBuilder: (context, index) => ProfileItem(index : index + 4, userScore: userScore,),
+                              itemCount: 3,
                         ),
                       )
                     ],
-                  ))
+                  )),
+                  checkForAd(),
                 ],
               ))),
     );
@@ -162,10 +274,12 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
 }
 
 class ProfileItem extends StatelessWidget {
+  final List<UserScore> userScore;
   final int index;
   const ProfileItem({
     Key key,
-    this.index
+    this.index,
+    this.userScore,
   }) : super(key: key);
 
   @override
@@ -191,19 +305,19 @@ class ProfileItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/profile_picture_sample.jpg'))),
+                      image: NetworkImage(userScore[index - 1].user_pictureurl))),
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Name 1",
+              Text(userScore[index - 1].user_name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),),
               SizedBox(height: 4,),
-              Text("100",
+              Text(userScore[index - 1].points,
                   style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey),
@@ -218,8 +332,9 @@ class ProfileItem extends StatelessWidget {
 class StackItem extends StatelessWidget {
   final bool large;
   final int placing;
+  final List<UserScore> userScore;
 
-  const StackItem({Key key, this.large = false, this.placing}) : super(key: key);
+  const StackItem({Key key, this.large = false, this.placing, this.userScore}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -227,8 +342,8 @@ class StackItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: large ? 95 : 80,
-          height: large ? 95 : 80,
+          width: large ? MediaQuery.of(context).size.height * 0.16 : MediaQuery.of(context).size.height * 0.15,
+          height: large ? MediaQuery.of(context).size.height * 0.16 : MediaQuery.of(context).size.height * 0.15,
           child: Stack(
             children: [
               Container(
@@ -241,8 +356,7 @@ class StackItem extends StatelessWidget {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(
-                                'assets/profile_picture_sample.jpg'))),
+                            image: NetworkImage(userScore[placing - 1].user_pictureurl))),
                   ),
                 ),
               ),
@@ -268,14 +382,14 @@ class StackItem extends StatelessWidget {
           ),
         ),
         Text(
-          "Name 1",
+          userScore[placing - 1].user_name,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         Text(
-          "200",
+          userScore[placing - 1].points,
           style: TextStyle(
             fontSize: 16,
           ),

@@ -23,18 +23,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core:
-  firebase_auth:
-  cloud_firestore:
   http: ^0.12.2
   flutter_spinkit: "^4.1.2"
   flutter_markdown: "^0.5.1"
-  flutter_facebook_login: ^3.0.0
+  flutter_facebook_login: ^1.2.0
+  google_sign_in: ^5.0.1
+  share: ^0.6.5
+  fluttertoast: ^3.1.0
+  flame: ^0.26.0
+  google_mobile_ads: ^0.12.0
+  cached_network_image: ^2.5.0
+
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   flutter_signin_button: ^1.1.0
+  pie_chart: ^5.0.0
+  shared_preferences: ^0.5.2
+
 
 
 dev_dependencies:
@@ -74,6 +82,17 @@ flutter:
      - assets/quizbanner/banner_ChristmasEdition2020.jpg
      - assets/policies/privacy_policy.md
      - assets/policies/terms_and_services.md
+     - assets/levels/level1.jpg
+     - assets/levels/level2.jpg
+     - assets/levels/level3.jpg
+     - assets/levels/level4.jpg
+     - assets/levels/level5.jpg
+     - assets/levels/level6.jpg
+     - assets/levels/level7.jpg
+     - assets/levels/level8.jpg
+     - assets/levels/level9.jpg
+     - assets/audio/tap.ogg
+     - assets/audio/bgm.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

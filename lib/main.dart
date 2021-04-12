@@ -1,16 +1,35 @@
+import 'package:SGLvlUp/audio/SoundsHandler.dart';
 import 'package:SGLvlUp/information_tab//information.dart';
 import 'package:SGLvlUp/leaderboard_tab/leaderboard.dart';
 import 'package:SGLvlUp/login/login_page.dart';
 import 'package:SGLvlUp/settings_tab/settings.dart';
+import 'package:SGLvlUp/shared/UserPreferences.dart';
+import 'package:SGLvlUp/shared/UserProfile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'category/categories_layout.dart';
+import 'ads/ad_helper.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-void main() {
+const String testDevice = 'Mobile_id';
+
+void main() async {
+
+  
+  //WidgetsFlutterBinding.ensureInitialized();
+  //MobileAds.instance.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  await UserPreferences().init();
+  print(UserPreferences().sound.toString() + UserPreferences().tapSound.toString());
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +60,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage(this.user);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -52,13 +71,18 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final UserProfile user;
 
   @override
   _NavBarState createState() => _NavBarState();
 }
 
 class HomeWidget extends StatelessWidget {
+
+  final UserProfile user;
+
+  HomeWidget(this.user);
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -88,9 +112,10 @@ class HomeWidget extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
+                SoundsHandler().playTap();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CategoriesLayout()),
+                  MaterialPageRoute(builder: (context) => CategoriesLayout(user)),
                 );
               },
               child: Text("Classic"),
@@ -99,18 +124,22 @@ class HomeWidget extends StatelessWidget {
                   primary: Color(0xFFFFC823),
                   textStyle: TextStyle(fontSize: 22)),
             ),
+
             ElevatedButton(
 
-              onPressed: () => CategoriesLayout(),
+              onPressed: () {
+                //SoundsHandler().playTap();
+              },
               child: Text("Challenges"),
               style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.only(left: 50, right: 50),
-                  primary: Color(0xFFFFC823),
+                  primary: Colors.grey,
                   textStyle: TextStyle(fontSize: 22)),
             ),
             SizedBox(
-              height: 50,
-            )
+              height: 20,
+            ),
+
           ],
         ),
       ),
@@ -134,17 +163,35 @@ class NavBar extends StatefulWidget {
 */
 
 class _NavBarState extends State<MyHomePage> {
+
   int _selectedIndex = 0;
+
+  @override
+  initState() {
+    _user = widget.user;
+  }
+
+  @override
+
+  static UserProfile _user;
+
+
   static List<Widget> _widgetOptions = <Widget>[
-    new HomeWidget(),
-    new InformationWidget(),
-    new SettingWidget(),
+    new HomeWidget(_user),
+    new InformationWidget(_user),
+    new SettingWidget(_user),
     new LeaderboardWidget(),
   ];
 
   void _onItemTapped(int index) {
+    SoundsHandler().playTap();
     setState(() {
-      _selectedIndex = index;
+      if(index == 1 && _user.user_name == "Guest") {
+        Navigator.pop(context);
+      } else {
+        _selectedIndex = index;
+      }
+
     });
   }
 

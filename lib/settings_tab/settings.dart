@@ -1,9 +1,18 @@
+import 'package:SGLvlUp/ads/ad_helper.dart';
+import 'package:SGLvlUp/audio/SoundsHandler.dart';
 import 'package:SGLvlUp/information_tab/policy_dialogue.dart';
+import 'package:SGLvlUp/shared/UserPreferences.dart';
+import 'package:SGLvlUp/shared/UserProfile.dart';
 import 'package:flutter/material.dart';
-//import 'package:share/share.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:share/share.dart';
+import 'package:http/http.dart' as http;
 
 class SettingWidget extends StatefulWidget {
-  SettingWidget({Key key}) : super(key: key);
+  final UserProfile user;
+
+  SettingWidget(this.user);
 
   @override
   _SettingWidgetState createState() => _SettingWidgetState();
@@ -12,9 +21,109 @@ class SettingWidget extends StatefulWidget {
 class _SettingWidgetState extends State<SettingWidget> {
   // To get data from a saved appdata
 
-  bool sound = true;
-  bool backgroundSound = true;
-  bool pushNotification = true;
+
+  bool tapSound = SoundsHandler().tapSound;
+  bool sound = SoundsHandler().sound;
+  bool pushNotification;
+  BannerAd _ad;
+  //InterstitialAd _ad;
+  bool isLoaded;
+  String apiUrl = "http://ec2-54-255-217-149.ap-southeast-1.compute.amazonaws.com:5000";
+
+  String message = "" ;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    if(widget.user.user_notification == 1) {
+      pushNotification = true;
+    } else {
+      pushNotification = false;
+    }
+
+
+    _ad = BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: AdRequest(),
+        size: AdSize.fullBanner,
+        listener: AdListener(
+            onAdLoaded: (_) {
+              setState(() {
+                isLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (_, error){
+              print('Ad Fail to Load with Error: $error');
+            }
+        )
+    );
+
+    _ad.load();
+
+
+    /*
+    _ad = InterstitialAd(
+        adUnitId: AdHelper.interstitialAdUnitId,
+        request: AdRequest(),
+        listener: AdListener(
+          onAdLoaded: (Ad ad) {
+            setState(() {
+              isLoaded = true;
+            });
+            print('Ad loaded.');
+          },
+          onAdFailedToLoad: (Ad ad, LoadAdError error) {
+            ad.dispose();
+            print('Ad failed to load: $error');
+          },
+          // Called when an ad opens an overlay that covers the screen.
+          onAdOpened: (Ad ad) => print('Ad opened.'),
+          // Called when an ad removes an overlay that covers the screen.
+          onAdClosed: (Ad ad) {
+            ad.dispose();
+            print('Ad closed.');
+          },
+          // Called when an ad is in the process of leaving the application.
+          onApplicationExit: (Ad ad) => print('Left application.'),
+        )
+    );
+
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        print('isLoading is False');
+        _ad.load();
+      });
+      _ad.show();
+    });
+
+     */
+    super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    print("Ads Disposed");
+    super.dispose();
+  }
+
+
+  Widget checkForAd() {
+    if(isLoaded == true) {
+      return Container(
+        child: AdWidget(
+          ad: _ad,
+        ),
+        width: _ad.size.width.toDouble(),
+        height: _ad.size.height.toDouble(),
+        alignment: Alignment.center,
+      );
+    } else {
+      return CircularProgressIndicator();
+    }
+  }
+
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -40,110 +149,167 @@ class _SettingWidgetState extends State<SettingWidget> {
                 title: Text('Settings'),
                 backgroundColor: Colors.transparent,
               ),
-              body: SingleChildScrollView(
-                padding: EdgeInsets.all(16),
+              body: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.all(16),
             // Center is a layout widget. It takes a single child and positions it
             // in the middle of the parent.
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Game Settings",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SwitchListTile(
-                  dense: true,
-                  activeColor: Color(0xFFFFC823),
-                  contentPadding: EdgeInsets.all(0),
-                  value: sound,
-                  title: Text("Sound"),
-                  onChanged: (val) {
-                    setState(() {
-                      sound = val;
-                    });
-                  },
-                  secondary: const Icon(Icons.volume_up_outlined),
-                ),
-                SwitchListTile(
-                  dense: true,
-                  activeColor: Color(0xFFFFC823),
-                  contentPadding: EdgeInsets.all(0),
-                  value: backgroundSound,
-                  title: Text("Background Music"),
-                  onChanged: (val) {
-                    setState(() {
-                      backgroundSound = val;
-                    });
-                  },
-                  secondary: const Icon(Icons.music_note_outlined),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  "Notification Settings",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SwitchListTile(
-                  dense: true,
-                  activeColor: Color(0xFFFFC823),
-                  contentPadding: EdgeInsets.all(0),
-                  value: pushNotification,
-                  title: Text("Push Notification"),
-                  onChanged: (val) {
-                    setState(() {
-                      pushNotification = val;
-                    });
-                  },
-                  secondary: const Icon(Icons.notifications_none),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Divider(
-                  height: 15,
-                  thickness: 2,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                buildFeedback(context),
-                SizedBox(
-                  height: 20,
-                ),
-                buildPrivacyPolicy(context),
-                SizedBox(
-                  height: 20,
-                ),
-                buildTosPolicy(context),
-                SizedBox(
-                  height: 20,
-                ),
-                buildShare(context),
-                SizedBox(
-                  height: 20,
-                ),
-                Divider(
-                  height: 15,
-                  thickness: 2,
-                ),
-                buildLogout(context),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Game Settings",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SwitchListTile(
+                              dense: true,
+                              activeColor: Color(0xFFFFC823),
+                              contentPadding: EdgeInsets.all(0),
+                              value: tapSound,
+                              title: Text("Sound"),
+                              onChanged: (val) {
+                                SoundsHandler().playTap();
+                                setState(() {
+                                  tapSound = val;
+                                  UserPreferences().setTapSound(val);
+                                  SoundsHandler().tapSound = val;
+                                });
+                              },
+                              secondary: const Icon(Icons.volume_up_outlined),
+                            ),
+                            SwitchListTile(
+                              dense: true,
+                              activeColor: Color(0xFFFFC823),
+                              contentPadding: EdgeInsets.all(0),
+                              value: sound,
+                              title: Text("Background Music"),
+                              onChanged: (val) {
+                                SoundsHandler().playTap();
+                                setState(() {
+                                  sound = val;
+                                  UserPreferences().setSound(val);
+                                  SoundsHandler().sound = val;
+                                  SoundsHandler().update();
+                                });
+                              },
+                              secondary: const Icon(Icons.music_note_outlined),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Notification Settings",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SwitchListTile(
+                              dense: true,
+                              activeColor: Color(0xFFFFC823),
+                              contentPadding: EdgeInsets.all(0),
+                              value: pushNotification,
+                              title: Text("Push Notification"),
+                              onChanged: (val) {
+                                setState(() {
+                                  SoundsHandler().playTap();
+                                  pushNotification = val;
+                                  // Update notification
+                                  Future<void> updateNotification() async {
+                                    var value;
+                                    if (val == true) {
+                                      value = "1";
+                                    } else {
+                                      value = "0";
+                                    }
+                                    print("Updating Notification...");
+                                    var response =
+                                    await http.put(apiUrl + "/api/user/notification",
+                                        body: {
+                                          "user_email" : "${widget.user.user_email}",
+                                          "user_notification" : "$value"
+                                        }
+                                    );
+                                    print(response.body);
 
-              ],
+
+                                    if (response.statusCode == 200) {
+                                      print("Passed");
+
+                                    } else {
+                                      print("Failed");
+                                      throw Exception('Failed to update Notification');
+                                    }
+                                  }
+                                  updateNotification();
+                                  if (val == true) {
+                                    widget.user.setUserNotification(1);
+                                  } else {
+                                    widget.user.setUserNotification(0);
+                                  }
+
+                                });
+                              },
+                              secondary: const Icon(Icons.notifications_none),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              height: 15,
+                              thickness: 2,
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            buildFeedback(context),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildPrivacyPolicy(context),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildTosPolicy(context),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildShare(context),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              height: 15,
+                              thickness: 2,
+                            ),
+                            buildLogout(context),
+                            Divider(
+                              height: 15,
+                              thickness: 2,
+                            ),
+
+                          ],
             ),
           ),
+                    ),
+                    checkForAd(),
+
+                  ],
+
+              ),
 
           //bottomNavigationBar: NavBar(),
           // This trailing comma makes auto-formatting nicer for build methods.
@@ -153,6 +319,7 @@ class _SettingWidgetState extends State<SettingWidget> {
   GestureDetector buildFeedback(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        SoundsHandler().playTap();
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -175,6 +342,9 @@ class _SettingWidgetState extends State<SettingWidget> {
                         ),
                         TextField(
                           maxLines: 10,
+                          onChanged: (String value) {
+                            message = value;
+                          },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15.0),
                             border: InputBorder.none,
@@ -196,12 +366,50 @@ class _SettingWidgetState extends State<SettingWidget> {
 
                         SizedBox(height: 15,),
 
-                        ElevatedButton(onPressed: () {},
+                        ElevatedButton(onPressed: () {
+                            if (message.length == 0) {
+                              Fluttertoast.showToast(msg: 'Please fill in the feedback field!',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER);
+                            } else if (message.length > 1000) {
+                              Fluttertoast.showToast(msg: 'Please keep the message under 1000 Characters!',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER);
+                            } else {
+                              print(message);
+                              print(DateTime.now().toString());
+                              Future<void> sendFeedback() async {
+                                print("Sending Feedback...");
+                                var response =
+                                await http.post(apiUrl + "/api/feedback/newfeedback",
+                                    body: {
+                                      "feedback" : "$message",
+                                      "receive_date" : "${DateTime.now().toString()}"
+                                    }
+                                );
+                                print(response.body);
+                                if (response.statusCode == 200) {
+                                  print("Passed");
+                                } else {
+                                  print("Failed");
+                                  throw Exception('Failed to send Feedback');
+                                }
+                              }
+                              sendFeedback();
+                              Fluttertoast.showToast(msg: 'Feedback Sent!',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER);
+
+                              Navigator.of(context).pop();
+                            }
+
+                        },
                           child: Text('Submit'),
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                             primary: Color(0xFFFFC823),
-                          ),),
+                          ),
+                        ),
 
                         SizedBox(height: 30,),
 
@@ -264,6 +472,7 @@ class _SettingWidgetState extends State<SettingWidget> {
   GestureDetector buildPrivacyPolicy(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        SoundsHandler().playTap();
         showDialog(context: context, builder:(context) {
           return PolicyDialog(mdFileName: 'privacy_policy.md');
         },);
@@ -287,6 +496,7 @@ class _SettingWidgetState extends State<SettingWidget> {
   GestureDetector buildTosPolicy(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        SoundsHandler().playTap();
         showDialog(context: context, builder:(context) {
           return PolicyDialog(mdFileName: 'terms_and_services.md');
         },);
@@ -309,7 +519,10 @@ class _SettingWidgetState extends State<SettingWidget> {
 
   GestureDetector buildShare(BuildContext context) {
     return GestureDetector(
-      onTap: () => share(context),
+      onTap: () {
+        SoundsHandler().playTap();
+        Share.share("Hi Friends! I'm playing SgLvlUp! Come join me at https://www.xplorers.com.sg/about-2");
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -340,7 +553,13 @@ class _SettingWidgetState extends State<SettingWidget> {
 
   GestureDetector buildLogout(BuildContext context) {
     return GestureDetector(
-      onTap: () => share(context),
+      onTap: () {
+        SoundsHandler().playTap();
+        Future.delayed(Duration(seconds: 1), () {
+          Navigator.pop(context);
+        });
+
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

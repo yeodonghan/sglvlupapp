@@ -1,12 +1,16 @@
 import 'dart:convert';
 
-import 'package:SGLvlUp/shared/loading.dart';
+import 'package:SGLvlUp/shared/UserProfile.dart';
+import 'package:SGLvlUp/shared/loader.dart';
 import 'package:flutter/material.dart';
 import './category.dart';
 import './category_bubble.dart';
 import 'package:http/http.dart' as http;
 
 class CategoriesContainer extends StatefulWidget {
+  final UserProfile user;
+  const CategoriesContainer(this.user);
+
   @override
   CategoryState createState() => new CategoryState();
 }
@@ -15,7 +19,7 @@ class CategoryState extends State<CategoriesContainer> {
   bool isLoading = true;
   List<Category> categoriesName = List<Category>();
 
-  final String url = "http://10.0.2.2:5000/api/quiz/categories";
+  String apiUrl = "http://ec2-54-255-217-149.ap-southeast-1.compute.amazonaws.com:5000";
 
   //Init Fetch
 
@@ -24,6 +28,8 @@ class CategoryState extends State<CategoriesContainer> {
     this.getJsonData().then((value) {
       setState(() {
         categoriesName.addAll(value);
+
+
         isLoading = false;
       });
     });
@@ -35,7 +41,7 @@ class CategoryState extends State<CategoriesContainer> {
   Future<List<Category>> getJsonData() async {
     print("fetching...");
     var response =
-    await http.get(url
+    await http.get(apiUrl + "/api/quiz/categories"
         );
     print(response.body);
 
@@ -60,7 +66,7 @@ class CategoryState extends State<CategoriesContainer> {
   List<Widget> prepareCategories(List<Category> categoriesInput) {
     List<Category> categories = categoriesInput;
     List<Widget> compiled = [];
-    List<Widget> currentRow = [CategoryBubble(categories[0].category, categories[0].cid)];
+    List<Widget> currentRow = [CategoryBubble(categories[0].category, categories[0].cid, categories[0].pictureurl, widget.user, categories[0].description)];
 
     while(categories.length % 3 != 0) {
       categories.add(new Category());
@@ -76,7 +82,7 @@ class CategoryState extends State<CategoriesContainer> {
         compiled.add(toAdd);
         currentRow = [];
       }
-      CategoryBubble category = CategoryBubble(categories[i].category, categories[1].cid);
+      CategoryBubble category = CategoryBubble(categories[i].category, categories[i].cid, categories[i].pictureurl, widget.user, categories[i].description);
       currentRow.add(category);
     }
 
@@ -95,55 +101,60 @@ class CategoryState extends State<CategoriesContainer> {
   @override
   Widget build(BuildContext context) {
     print("Build ran");
-    return isLoading ? Loading() : Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
-      height: MediaQuery.of(context).size.height * 0.85,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
+    return isLoading ? Loader() : Expanded(
 
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15,
-                ),
-                // CATEGORIES TITLE -------------------------
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      top: 10,
-                      bottom: 10,
-                    ),
-                    child: Text(
-                      "Categories",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    color: Colors.white,
+
+      child: Container(
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
-                ),
-                SizedBox(height: 20),
-                Expanded(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 20),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: prepareCategories(categoriesName))),
-                    color: Colors.white,
+                  // CATEGORIES TITLE -------------------------
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        top: 10,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        "Categories",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      color: Colors.white,
+                    ),
                   ),
-                )),
-                SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
-            color: Color(0xFFFFC823)),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Expanded(
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: prepareCategories(categoriesName))),
+                      color: Colors.white,
+                    ),
+                  )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  )
+                ],
+              ),
+              color: Color(0xFFFFC823)),
+        ),
       ),
 
     );

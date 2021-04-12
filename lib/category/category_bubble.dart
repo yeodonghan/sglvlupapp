@@ -1,10 +1,19 @@
+import 'dart:math';
+
+import 'package:SGLvlUp/audio/SoundsHandler.dart';
+import 'package:SGLvlUp/shared/UserProfile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../sub_category/sub_category_layout.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CategoryBubble extends StatelessWidget {
   final String categoryName;
   final int categoryID;
-  CategoryBubble(this.categoryName, this.categoryID );
+  final String pictureurl;
+  final String description;
+  final UserProfile user;
+  CategoryBubble(this.categoryName, this.categoryID, this.pictureurl, this.user, this.description);
 
 
 
@@ -13,8 +22,8 @@ class CategoryBubble extends StatelessWidget {
     if(categoryName == null) {
       return
         Container(
-          height: 120,
-          width: 75,
+          height: MediaQuery.of(context).size.height * 0.172,
+          width: MediaQuery.of(context).size.height * 0.09,
 
           // ),
         );
@@ -23,51 +32,63 @@ class CategoryBubble extends StatelessWidget {
         // Flexible(
         //   child:
         Container(
-          height: 120,
-          width: 75,
+          height: MediaQuery.of(context).size.height * 0.172,
+          width: MediaQuery.of(context).size.height * 0.09,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Material(
+                color: Colors.white,
                 child: InkWell(
                   onTap: () {
+                    SoundsHandler().playTap();
                     print(this.categoryName);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              SubCategoryLayout(this.categoryName, this.categoryID)),
+                              SubCategoryLayout(this.categoryName, this.categoryID, this.pictureurl, this.user, this.description)),
                     );
                   },
                   child: Container(
-                    width: 70,
-                    height: 70,
+                    width: MediaQuery.of(context).size.height * 0.09,
+                    height: MediaQuery.of(context).size.height * 0.09,
+                    //padding: EdgeInsets.all(0),
+
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: AssetImage('assets/quizbanner/banner_' + categoryName.replaceAll(' ', '').replaceAll(':', '') + '.jpg'),
-                            fit: BoxFit.cover
-                        ),
+                          image: NetworkImage("http://drive.google.com/uc?export=view&id=" + pictureurl),
+                        fit: BoxFit.cover),
+                      ),
 
-                      )
+                    /*child: CachedNetworkImage(
+                      imageUrl: "http://drive.google.com/uc?export=view&id=" + pictureurl,
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+
+                     */
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.002),
               Container(
-                width: 70,
-                height: 30,
-                child: Flexible(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.height * 0.09,
+                height: MediaQuery.of(context).size.height * 0.03,
+
                   child: Text(
                     categoryName,
                     style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
-                ),
+
               ),
               SizedBox(
-                height: 10,
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
             ],
           ),

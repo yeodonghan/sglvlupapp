@@ -1,4 +1,4 @@
-package com.example.SGLvlUp
+package com.xplorer.SGLvlUp
 
 import io.flutter.embedding.android.FlutterActivity
 

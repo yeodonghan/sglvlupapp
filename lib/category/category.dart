@@ -1,10 +1,14 @@
 class Category{
   int cid;
   String category;
+  String pictureurl;
+  String description;
 
   Category({
     this.cid,
     this.category,
+    this.pictureurl,
+    this.description
   });
 
 
@@ -15,7 +19,9 @@ class Category{
   factory Category.fromJson(Map<String, dynamic> parsedJson){
     return Category(
         cid: parsedJson['c_id'],
-        category : parsedJson['category']
+        category : parsedJson['category'],
+        pictureurl: parsedJson['pictureurl'],
+        description: parsedJson['description'],
     );
   }
 }

@@ -7,14 +7,17 @@ class BigRedCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 45,
-        height: 45,
-        padding: EdgeInsets.symmetric(vertical: 15),
+        width: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.08,
+        padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01,),
         decoration:
             BoxDecoration(shape: BoxShape.circle, color: Color(0xFFFC8002)),
-        child: Text(
-          time.toString(),
-          textAlign: TextAlign.center,
+        child: Center(
+          child: Text(
+            time.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
         ));
   }
 }
