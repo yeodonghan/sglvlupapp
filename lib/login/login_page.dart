@@ -1,7 +1,7 @@
 
 
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:SGLvlUp/audio/SoundsHandler.dart';
 import 'package:SGLvlUp/category/category.dart';
 import 'package:SGLvlUp/information_tab/policy_dialogue.dart';
@@ -188,8 +188,11 @@ class _LoginPageState extends State<LoginPage> {
 
 
   _loginWithFB() async {
-    final result = await facebookLogin.logInWithReadPermissions(['email']);
-
+    /*if(Platform.isIOS){
+      facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
+    }*/
+    final result = await facebookLogin.logIn(['email']);
+    print("Fetched fb user");
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final token = result.accessToken.token;
@@ -461,7 +464,9 @@ class _LoginPageState extends State<LoginPage> {
                       text: "Login with Facebook",
                       onPressed: () {
                         SoundsHandler().playTap();
+                        print("Logging in with FB!");
                         _loginWithFB();
+                        print("Done Logging in with FB!");
                       },
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),

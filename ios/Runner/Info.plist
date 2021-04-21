@@ -2,33 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb507395897304209</string>
-      </array>
-      </dict>
-    </array>
-
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-6681122776256103~6601331470</string>
-    <key>SKAdNetworkItems</key>
-      <array>
-        <dict>
-          <key>SKAdNetworkIdentifier</key>
-          <string>cstr6suwn9.skadnetwork</string>
-        </dict>
-      </array>
-
-    <key>FacebookAppID</key>
-    <string>507395897304209</string>
-    <key>FacebookDisplayName</key>
-    <string>SGLVLUP</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>SGLvlUp</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -43,10 +20,42 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.567528711565-lskhbrokq0fjv053g1ki39s7e2l5jise</string>
+				<string>fb507395897304209</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>507395897304209</string>
+	<key>FacebookDisplayName</key>
+	<string>SgLvlUp</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6681122776256103~6601331470</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

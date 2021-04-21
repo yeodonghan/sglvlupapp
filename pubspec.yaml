@@ -26,7 +26,7 @@ dependencies:
   http: ^0.12.2
   flutter_spinkit: "^4.1.2"
   flutter_markdown: "^0.5.1"
-  flutter_facebook_login: ^1.2.0
+  flutter_facebook_login: ^3.0.0
   google_sign_in: ^5.0.1
   share: ^0.6.5
   fluttertoast: ^3.1.0

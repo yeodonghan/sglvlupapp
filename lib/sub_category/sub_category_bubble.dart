@@ -89,9 +89,6 @@ class SubCategoryBubbleState extends State<SubCategoryBubble> {
               ),
 
           ),
-          SizedBox(
-            height: 10,
-          ),
         ],
       ),
       // ),

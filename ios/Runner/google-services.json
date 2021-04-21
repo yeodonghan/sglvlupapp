@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "567528711565",
+    "project_id": "sglvlup-5e2bf",
+    "storage_bucket": "sglvlup-5e2bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567528711565:android:767a31c754cf3eb96e89c4",
+        "android_client_info": {
+          "package_name": "com.xplorer.SGLvlUp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567528711565-19430bgdri11aiv9n88f0qm4ma88a2c8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xplorer.SGLvlUp",
+            "certificate_hash": "491a2cf7991ff3a130271dda235747df78befe3a"
+          }
+        },
+        {
+          "client_id": "567528711565-f0qu648onp0aaoc47d59gj7lah2c2uif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xplorer.SGLvlUp",
+            "certificate_hash": "a3524c0067376623d83c0c445ac214a6a035cb21"
+          }
+        },
+        {
+          "client_id": "567528711565-g78cudj0f5in0a7aus3454hplb1a8d7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xplorer.SGLvlUp",
+            "certificate_hash": "1f325b9515b678238a544d4e61f77245da2ca02f"
+          }
+        },
+        {
+          "client_id": "567528711565-cirsv5pge20ga4j2fovqllk3g0c7v3pu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLUqoVEhvWkPCmEPGTxzy9VN35_OCFpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567528711565-cirsv5pge20ga4j2fovqllk3g0c7v3pu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
