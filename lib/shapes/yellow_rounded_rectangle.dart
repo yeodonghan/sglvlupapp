@@ -9,6 +9,7 @@ class YellowRoundedRectangle extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
         child: Container(
+          width: double.infinity,
         color: Color(0xFFFFC823),
         padding: EdgeInsets.only(
           left: 15,
@@ -37,5 +38,20 @@ class YellowRoundedRectangle extends StatelessWidget {
          */
       );
 
+  }
+
+  Widget _customButtonWidget(String label, {Function onPress}) {
+    return ElevatedButton(
+        child: Text(label,
+            style: TextStyle(fontSize: 18)),
+        style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+                EdgeInsets.only(left: 30, right: 30.0,top: 10.0,bottom: 10.0)),
+            backgroundColor: MaterialStateProperty.all<Color>( Color(0xFFFFC823)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ))),
+        onPressed: () => onPress());
   }
 }
