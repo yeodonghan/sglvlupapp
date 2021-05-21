@@ -6,6 +6,7 @@ class SubCategoryDescription extends StatelessWidget {
   final String categoryName;
   final String pictureurl;
   final String description;
+
   SubCategoryDescription(
       this.categoryID, this.categoryName, this.pictureurl, this.description);
 
@@ -23,19 +24,10 @@ class SubCategoryDescription extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               image: DecorationImage(
-                  image: NetworkImage(
-                      "http://drive.google.com/uc?export=view&id=" +
-                          pictureurl),
+                  image: CachedNetworkImageProvider(
+                      "http://drive.google.com/uc?export=view&id=$pictureurl"),
                   fit: BoxFit.cover),
             ),
-            /*
-            child: CachedNetworkImage(
-              imageUrl: "http://drive.google.com/uc?export=view&id=" + this.pictureurl,
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-
-             */
           ),
           Container(
             padding: EdgeInsets.only(
