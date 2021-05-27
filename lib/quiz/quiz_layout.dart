@@ -626,7 +626,7 @@ class _QuizLayoutState extends State<QuizLayout> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center),
                                         onPressed: () {
-                                          SoundsHandler().playTap();
+
                                           updateQuestion(
                                               prepareQuestions(questions)[j],
                                               prepareQuestions(questions)[j]
@@ -642,22 +642,19 @@ class _QuizLayoutState extends State<QuizLayout> {
                                                   .ans ==
                                               "a") {
                                             _buttonA = 1;
+                                            SoundsHandler().playCorrect();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonA = 0;
-                                              });
+
                                               correctAnswer();
                                             });
                                           } else {
                                             _buttonA = 2;
+                                            SoundsHandler().playWrong();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonA = 0;
-                                              });
                                               wrongAnswer();
                                             });
                                           }
@@ -748,27 +745,23 @@ class _QuizLayoutState extends State<QuizLayout> {
                                                   .stats_c,
                                               prepareQuestions(questions)[j]
                                                   .stats_d);
-                                          SoundsHandler().playTap();
+
                                           if (prepareQuestions(questions)[j]
                                                   .ans ==
                                               "b") {
                                             _buttonB = 1;
+                                            SoundsHandler().playCorrect();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonB = 0;
-                                              });
                                               correctAnswer();
                                             });
                                           } else {
                                             _buttonB = 2;
+                                            SoundsHandler().playWrong();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonB = 0;
-                                              });
                                               wrongAnswer();
                                             });
                                           }
@@ -857,27 +850,23 @@ class _QuizLayoutState extends State<QuizLayout> {
                                                     1,
                                                 prepareQuestions(questions)[j]
                                                     .stats_d);
-                                            SoundsHandler().playTap();
+
                                             if (prepareQuestions(questions)[j]
                                                     .ans ==
                                                 "c") {
                                               _buttonC = 1;
+                                              SoundsHandler().playCorrect();
                                               Future.delayed(
                                                   const Duration(
                                                       milliseconds: 2000), () {
-                                                setState(() {
-                                                  _buttonC = 0;
-                                                });
                                                 correctAnswer();
                                               });
                                             } else {
                                               _buttonC = 2;
+                                              SoundsHandler().playWrong();
                                               Future.delayed(
                                                   const Duration(
                                                       milliseconds: 2000), () {
-                                                setState(() {
-                                                  _buttonC = 0;
-                                                });
                                                 wrongAnswer();
                                               });
                                             }
@@ -967,27 +956,22 @@ class _QuizLayoutState extends State<QuizLayout> {
                                               prepareQuestions(questions)[j]
                                                       .stats_d +
                                                   1);
-                                          SoundsHandler().playTap();
                                           if (prepareQuestions(questions)[j]
                                                   .ans ==
                                               "d") {
                                             _buttonD = 1;
+                                            SoundsHandler().playCorrect();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonD = 0;
-                                              });
                                               correctAnswer();
                                             });
                                           } else {
                                             _buttonD = 2;
+                                            SoundsHandler().playWrong();
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 2000), () {
-                                              setState(() {
-                                                _buttonD = 0;
-                                              });
                                               wrongAnswer();
                                             });
                                           }

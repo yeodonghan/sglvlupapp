@@ -93,6 +93,8 @@ flutter:
      - assets/levels/level9.jpg
      - assets/audio/tap.ogg
      - assets/audio/bgm.mp3
+     - assets/audio/correct.ogg
+     - assets/audio/wrong.ogg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

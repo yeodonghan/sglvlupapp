@@ -20,18 +20,17 @@ class CategoryBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     if (categoryName == null) {
       return Container(
-        height: MediaQuery.of(context).size.height * 0.172,
-        width: MediaQuery.of(context).size.height * 0.09,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width * 0.205,
 
         // ),
       );
     } else {
       return
-          // Flexible(
           //   child:
           Container(
-        height: MediaQuery.of(context).size.height * 0.172,
-        width: MediaQuery.of(context).size.height * 0.09,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width * 0.205,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +53,7 @@ class CategoryBubble extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.height * 0.09,
+                  width: MediaQuery.of(context).size.width * 0.206,
                   height: MediaQuery.of(context).size.height * 0.09,
                   //padding: EdgeInsets.all(0),
                   decoration: BoxDecoration(
@@ -71,16 +70,16 @@ class CategoryBubble extends StatelessWidget {
             SizedBox(height: MediaQuery.of(context).size.height * 0.002),
             Container(
               color: Colors.white,
-              width: MediaQuery.of(context).size.height * 0.09,
-              height: MediaQuery.of(context).size.height * 0.03,
+              width: MediaQuery.of(context).size.width * 0.247,
+              height: MediaQuery.of(context).size.height * 0.07,
               child: Text(
                 categoryName,
-                style: TextStyle(fontSize: 10),
+                style: TextStyle(fontSize: 11),
                 textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
           ],
         ),

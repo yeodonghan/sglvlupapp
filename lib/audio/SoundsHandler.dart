@@ -26,6 +26,24 @@ class SoundsHandler {
     catch(Exception){}
   }
 
+  void playCorrect() async{
+    try {
+      if (this.tapSound == true) {
+        await Flame.audio.play('correct.ogg');
+      }
+    }
+    catch(Exception){}
+  }
+
+  void playWrong() async{
+    try {
+      if (this.tapSound == true) {
+        await Flame.audio.play('wrong.ogg');
+      }
+    }
+    catch(Exception){}
+  }
+
   void playBGM() async{
     try {
       if (this.sound == true) {
