@@ -60,86 +60,94 @@ class _InformationWidgetState extends State<InformationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/background/informationBG.png'),
-            fit: BoxFit.cover),
-      ),
-      child: SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              title: Text('Profile'),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/background/informationBG.png'),
+              fit: BoxFit.cover),
+        ),
+        child: SafeArea(
+          child: Scaffold(
+              resizeToAvoidBottomInset: false,
               backgroundColor: Colors.transparent,
-            ),
-            body: Container(
-                // Center is a layout widget. It takes a single child and positions it
-                // in the middle of the parent.
-                alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.all(0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                ),
-                              ],
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: Text('Profile'),
+                backgroundColor: Colors.transparent,
+              ),
+              body: Container(
+                  // Center is a layout widget. It takes a single child and positions it
+                  // in the middle of the parent.
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.all(0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(0),
                                     height:
-                                        MediaQuery.of(context).size.height * 0.15,
-                                    width:
-                                        MediaQuery.of(context).size.height * 0.15,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: CachedNetworkImageProvider(
-                                                widget.user.user_pictureurl))),
+                                        MediaQuery.of(context).size.height * 0.04,
                                   ),
-                                ]),
-                            Row(
-                              children: [
-                                Container(
-                                  height: 40,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                MyAccountForm(widget.user),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(0),
+                                      height:
+                                          MediaQuery.of(context).size.height * 0.15,
+                                      width:
+                                          MediaQuery.of(context).size.height * 0.15,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider(
+                                                  widget.user.user_pictureurl))),
+                                    ),
+                                  ]),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  MyAccountForm(widget.user),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    checkForAd()
-                  ],
-                ))),
+                      checkForAd()
+                    ],
+                  ))),
+        ),
       ),
     );
   }
