@@ -3,6 +3,7 @@ import 'package:SGLvlUp/information_tab//information.dart';
 import 'package:SGLvlUp/leaderboard_tab/leaderboard.dart';
 import 'package:SGLvlUp/login/login_page.dart';
 import 'package:SGLvlUp/settings_tab/settings.dart';
+import 'package:SGLvlUp/shared/LifecycleManager.dart';
 import 'package:SGLvlUp/shared/UserPreferences.dart';
 import 'package:SGLvlUp/shared/UserProfile.dart';
 import 'package:flame/flame.dart';
@@ -73,14 +74,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: "Londrina",
-        primarySwatch: Colors.yellow,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return LifeCycleManager(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: "Londrina",
+          primarySwatch: Colors.yellow,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: _defaultWidgets,
       ),
-      home: _defaultWidgets,
     );
   }
 }
