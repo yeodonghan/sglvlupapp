@@ -33,6 +33,7 @@ dependencies:
   flame: ^0.26.0
   google_mobile_ads: ^0.12.0
   cached_network_image: ^2.5.0
+  asset_cache: ^1.0.0+1
 
 
 
