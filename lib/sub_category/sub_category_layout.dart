@@ -130,6 +130,7 @@ class _SubCategoryLayoutState extends State<SubCategoryLayout> {
       for (var unit in data) {
         subcategorylist.add(SubCategory.fromJson(unit));
       }
+      subcategorylist.sort((a, b) => a.level.compareTo(b.level));
       return subcategorylist;
     } else {
       print("Failed");
