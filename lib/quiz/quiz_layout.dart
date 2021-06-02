@@ -660,6 +660,11 @@ class _QuizLayoutState extends State<QuizLayout> {
                                           }
                                         },
                                       ),
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context).size.height *
+                                            0.003,
+                                      ),
                                       RaisedButton(
                                         elevation: 0,
                                         color: buttonA[_buttonB],
@@ -767,6 +772,11 @@ class _QuizLayoutState extends State<QuizLayout> {
                                           }
                                         },
                                       ),
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context).size.height *
+                                            0.003,
+                                      ),
                                       RaisedButton(
                                           elevation: 0,
                                           color: buttonA[_buttonC],
@@ -871,6 +881,11 @@ class _QuizLayoutState extends State<QuizLayout> {
                                               });
                                             }
                                           }),
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context).size.height *
+                                            0.003,
+                                      ),
                                       RaisedButton(
                                         elevation: 0,
                                         color: buttonA[_buttonD],

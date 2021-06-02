@@ -1,6 +1,7 @@
 import 'package:SGLvlUp/ads/ad_helper.dart';
 import 'package:SGLvlUp/audio/SoundsHandler.dart';
 import 'package:SGLvlUp/category/categories_layout.dart';
+import 'package:SGLvlUp/shapes/yellow_rounded_rectangle_end.dart';
 import 'package:SGLvlUp/shared/UserProfile.dart';
 import 'package:SGLvlUp/shared/loader.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class WinScreenState extends State<WinScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              YellowRoundedRectangle(
+                              YellowRoundedRectangleEnd(
                                   "Congratulations\nYou have completed the quiz: " +
                                       "\n\n" +
                                       widget.categoryName +
@@ -201,7 +202,7 @@ class WinScreenState extends State<WinScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              YellowRoundedRectangle(
+                              YellowRoundedRectangleEnd(
                                   "Congratulations\nYou have completed the quiz: " +
                                       "\n\n" +
                                       widget.categoryName +
@@ -299,7 +300,7 @@ class WinScreenState extends State<WinScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              YellowRoundedRectangle(
+                              YellowRoundedRectangleEnd(
                                   "Congratulations\nYou have completed the quiz: " +
                                       "\n\n" +
                                       widget.categoryName +
@@ -427,7 +428,7 @@ class WinScreenState extends State<WinScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              YellowRoundedRectangle(
+                              YellowRoundedRectangleEnd(
                                   "Congratulations\nYou have completed the quiz: " +
                                       "\n\n" +
                                       widget.categoryName +

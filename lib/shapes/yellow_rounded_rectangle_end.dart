@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class YellowRoundedRectangle extends StatelessWidget {
+class YellowRoundedRectangleEnd extends StatelessWidget {
   final String message;
-  YellowRoundedRectangle(this.message);
+  YellowRoundedRectangleEnd(this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +10,6 @@ class YellowRoundedRectangle extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
         child: Container(
           width: double.infinity,
-          constraints: new BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.width * 0.4,
-          ),
         color: Color(0xFFFFC823),
         padding: EdgeInsets.only(
           left: 15,
