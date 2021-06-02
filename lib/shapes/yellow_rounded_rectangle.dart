@@ -10,6 +10,7 @@ class YellowRoundedRectangle extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
         child: Container(
           width: double.infinity,
+          height: MediaQuery.of(context).size.width * 0.4,
         color: Color(0xFFFFC823),
         padding: EdgeInsets.only(
           left: 15,
