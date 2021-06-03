@@ -218,7 +218,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                           child: Stack(
                             children: [
                               Align(
-                                  alignment: Alignment(-0.7, 0),
+                                  alignment: Alignment(-0.9, 0.2),
                                   child: StackItem(
                                     placing: 2,
                                     userScore: userScore,
@@ -232,7 +232,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                                 ),
                               ),
                               Align(
-                                  alignment: Alignment(0.7, 0),
+                                  alignment: Alignment(0.9, 0.2),
                                   child: StackItem(
                                     userScore: userScore,
                                     placing: 3,
