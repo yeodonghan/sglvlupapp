@@ -30,6 +30,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
   List<Category> categoriesName = List<Category>();
   List<String> listItem = List<String>();
   List<UserScore> userScore = List<UserScore>();
+  List<UserScore> overall;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
     this.getJsonData().then((value) {
       setState(() {
         categoriesName.addAll(value);
+        listItem.add("Overall");
         for (var i = 0; i < categoriesName.length; i++) {
           listItem.add(categoriesName[i].category);
         }
@@ -46,6 +48,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
       setState(() {
         userScore.addAll(value);
         print("Overall User Scores initialised");
+        overall = userScore;
         isLoading = false;
       });
     });
@@ -185,22 +188,26 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
                                 SoundsHandler().playTap();
                                 setState(() {
                                   print("Selected Category: " + newValue);
+                                  if(newValue == "Overall") {
+                                    userScore = overall;
+                                  } else {
+                                    this
+                                        .getJsonDataNewUserScore(newValue)
+                                        .then((value) {
+                                      setState(() {
+                                        print(value);
+                                        List<UserScore> currUserScore =
+                                        new List<UserScore>();
+                                        currUserScore.addAll(value);
+                                        userScore = currUserScore;
+                                        print(
+                                            "${valueChoose} User Scores initialised");
+                                        //dispose();
+                                      });
+                                    });
+                                  }
                                   valueChoose = newValue;
 
-                                  this
-                                      .getJsonDataNewUserScore(newValue)
-                                      .then((value) {
-                                    setState(() {
-                                      print(value);
-                                      List<UserScore> currUserScore =
-                                          new List<UserScore>();
-                                      currUserScore.addAll(value);
-                                      userScore = currUserScore;
-                                      print(
-                                          "${valueChoose} User Scores initialised");
-                                      //dispose();
-                                    });
-                                  });
                                 });
                               },
                               items: listItem.map((valueItem) {

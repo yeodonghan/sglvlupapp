@@ -21,6 +21,7 @@ class _InformationWidgetState extends State<InformationWidget> {
 
   @override
   void initState() {
+
     _bannerAd = BannerAd(
         adUnitId: AdHelper.bannerAdUnitId,
         request: AdRequest(),
