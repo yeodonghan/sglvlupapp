@@ -17,6 +17,11 @@ const String testDevice = 'Mobile_id';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+  final RequestConfiguration requestConfiguration = RequestConfiguration(
+      tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+      tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.yes,
+      maxAdContentRating: MaxAdContentRating.g);
+  MobileAds.instance.updateRequestConfiguration(requestConfiguration);
   await UserPreferences().init();
   String email = await UserPreferences.getStringData('email');
   String userId = await UserPreferences.getStringData('userId');
